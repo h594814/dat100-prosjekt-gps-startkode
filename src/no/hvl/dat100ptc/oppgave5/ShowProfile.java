@@ -44,14 +44,16 @@ public class ShowProfile extends EasyGraphics {
 	public void showHeightProfile(int ybase) {
 
 		// ybase indicates the position on the y-axis where the columns should start
-	
-		int x = MARGIN,y;
+		setColor(0,0,225);		
+		for (int i = 0; i<gpspoints.length-1; i++) {
+			int x = MARGIN + i * 3;
+			int y = (int) gpspoints[i].getElevation();
+			if (y < 0) {
+				y = 0;
+			}
+			drawLine(x,ybase,x,ybase - y);
+		}
 
-		// TODO - START
-
-		throw new UnsupportedOperationException(TODO.method());
-	
-		// TODO - SLUTT
 	}
 
 }

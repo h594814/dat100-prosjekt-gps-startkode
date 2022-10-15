@@ -125,7 +125,6 @@ public class GPSUtils {
 		String str;
 		
 		str = String.format("      %.2f",d);
-		System.out.println(str.length());
 		
 		return str;
 		

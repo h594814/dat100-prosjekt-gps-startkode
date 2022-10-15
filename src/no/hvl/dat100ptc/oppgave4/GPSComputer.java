@@ -111,49 +111,70 @@ public class GPSComputer {
 
 		double kcal;
 
-		// MET: Metabolic equivalent of task angir (kcal x kg-1 x h-1)
-		double met = 0;		
-		double speedmph = speed * MS ;
-		double h = secs*3600;
-		
-		if(speedmph < 10) met = 4;
-		if(speedmph >= 10 && speedmph < 12) met = 6;
-		if(speedmph >= 12 && speedmph < 14) met = 8;
-		if(speedmph >= 14 && speedmph < 16) met = 10;
-		if(speedmph >= 16 && speedmph < 18) met = 12;
-		if(speedmph > 20) met = 16;
-		
-		kcal = met/(weight*h);
-		
-	return kcal;
-	}
+        // MET: Metabolic equivalent of task angir (kcal x kg-1 x h-1)
+        double met = 0;
+        double speedmph = speed * MS;
+
+        if (speedmph < 10) {
+            met = 4.0;
+        }
+        if (speedmph >= 10 && speedmph < 12) {
+            met = 6.0;
+        }
+        if (speedmph >= 12 && speedmph < 14) {
+            met = 8.0;
+        }
+        if (speedmph >= 14 && speedmph < 16) {
+            met = 10.0;
+        }
+        if (speedmph >= 16 && speedmph < 20) {
+            met = 12.0;
+        }
+        if (speedmph >= 20) {
+            met = 16.0;
+        }
+
+        return kcal = met * weight * (secs / 3600.0);
+
+    }
 
 	public double totalKcal(double weight) {
-
+		
 		double totalkcal = 0;
 		
-		double speed = averageSpeed();
-		int secs = totalTime();
+		double [] kcalTab = new double[gpspoints.length -1];
+		double [] avgSpeed = new double[gpspoints.length - 1];
 		
-		totalkcal = kcal(weight,secs,speed);
+		
+		for(int i=0; i < gpspoints.length - 1; i++) {
+			avgSpeed[i] = GPSUtils.speed(gpspoints[i], gpspoints[i+1]);
+			kcalTab[i] = kcal(weight,(gpspoints[i+1].getTime() - gpspoints[i].getTime()),avgSpeed[i]);
+			totalkcal = totalkcal + kcalTab[i];
+		}
 		
 		return totalkcal;
 		
-		
 	}
-	
+		
 	private static double WEIGHT = 80.0;
 	
 	public void displayStatistics() {
-
+		
+		
 		System.out.println("==============================================");
-
-		// TODO - START
-
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - SLUTT
-		
+		System.out.printf("%-15s:","Total Time");
+		System.out.println(GPSUtils.formatTime(this.totalTime()));
+		System.out.printf("%-15s:", "Total distance");
+		System.out.println(GPSUtils.formatDouble(this.totalDistance() / 1000) + " km");
+		System.out.printf("%-15s:", "Total elevation");
+		System.out.println(GPSUtils.formatDouble(this.totalElevation()) + "m");
+		System.out.printf("%-15s:", "Max speed");
+		System.out.println(GPSUtils.formatDouble(this.maxSpeed()) + " km/t");
+		System.out.printf("%-15s:", "Average speed");
+		System.out.println(GPSUtils.formatDouble(this.averageSpeed()) + " km/t");
+		System.out.printf("%-15s:", "Energy");
+		System.out.println(GPSUtils.formatDouble(this.totalKcal(WEIGHT)) + " kcal");
+		System.out.println("==============================================");
 	}
 
 }
