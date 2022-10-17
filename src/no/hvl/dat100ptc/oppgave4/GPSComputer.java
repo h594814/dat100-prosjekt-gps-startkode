@@ -25,6 +25,9 @@ public class GPSComputer {
 	public GPSPoint[] getGPSPoints() {
 		return this.gpspoints;
 	}
+	public static double getWEIGHT() {
+		return WEIGHT;
+	}
 	
 	// beregn total distances (i meter)
 	public double totalDistance() {

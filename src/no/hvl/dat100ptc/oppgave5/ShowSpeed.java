@@ -43,9 +43,8 @@ public class ShowSpeed extends EasyGraphics {
 	
 	public void showSpeedProfile(int ybase, int N) {
 
-		// get segments speeds from the GPS computer object		
-		double[] speeds = gpscomputer.speeds();
-
+		// get segments speeds from the GPS computer object
+		
 		double distance = 0;
 		for(int i=0; i < gpspoints.length-1; i++) {
 			distance = distance + GPSUtils.distance(gpspoints[i],gpspoints[i+1]);
